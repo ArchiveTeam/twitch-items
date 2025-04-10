@@ -13,21 +13,23 @@ def main(filepath: str):
     }.get(filepath.rsplit('.', 1)[-1]) or open
     items = []
     with open_func(filepath, 'r') as f:
-        indices = ['id', 'peril']
+        indices = ['id', 'peril', 'speedrun']
         for i, line in enumerate(f):
             if type(line) is bytes:
                 line = str(line, 'utf8')
-            line = line.split(',')
+            line = line.strip().split(',')
             if i == 0:
                 indices = {
                     k: (line.index(k) if k in line else -1)
                     for k in indices
                 }
                 assert 'id' in indices
+                print(indices)
                 continue
             video_id = line[indices['id']]
             video_peril = line[indices['peril']] if indices['peril'] >= 0 else 'y'
-            if video_peril == 'y':
+            video_speedrun = line[indices['speedrun']] if indices['speedrun'] >= 0 else 'y'
+            if video_peril == 'y' and video_speedrun == 'y':
                 items.append('video:' + video_id)
     with open(norm_filepath+'_items.txt', 'w') as f:
         f.write('\n'.join(items)+'\n')
