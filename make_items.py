@@ -3,7 +3,6 @@ import sys
 import zstandard
 
 ITEMS_PER_FILE = 5 * 10 ** 7
-SINGLE_RANGE = [2350000000, 2399999999]
 
 
 def main(start: int, stop: int):
